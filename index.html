@@ -1,4 +1,8 @@
 <!DOCTYPE html>
+        </audio>
+        <p><em>Este áudio simula a escuta desacelerada. Em uma versão real, conteria o depoimento de Dona Cida.</em></p>
+        <button onclick="calcularIPP()">Finalizar e Calcular IPP</button>
+    </div>
 
     <!-- Etapa 3: Relatório -->
     <div id="report-section" class="section">
@@ -11,16 +15,16 @@
 
         <h3>O Vaso do Meio</h3>
         <div class="vaso-container">
-            <div class="vaso vaso-vitima">
-                <div class="planta"></div>
+            <div class="vaso">
+                <div class="planta" style="height: 40px; width: 40px;"></div>
                 <div class="vaso-label">Daniel</div>
             </div>
-            <div class="vaso vaso-meio">
-                <div class="planta" id="planta-meio"></div>
+            <div class="vaso">
+                <div class="planta" id="planta-meio" style="height: 0; width: 0;"></div>
                 <div class="vaso-label">Nós</div>
             </div>
-            <div class="vaso vaso-reu">
-                <div class="planta"></div>
+            <div class="vaso">
+                <div class="planta" style="height: 40px; width: 40px;"></div>
                 <div class="vaso-label">Max</div>
             </div>
         </div>
@@ -30,36 +34,31 @@
 </div>
 
 <script>
-    // Função para ir para a próxima seção
     function nextSection(currentId, nextId) {
         document.getElementById(currentId).classList.remove('active');
         document.getElementById(nextId).classList.add('active');
     }
 
-    // Simulação de cálculo do IPP
     function calcularIPP() {
-        const sliderValue = document.getElementById("presence-slider").value;
-        // Simulação: quanto mais alto o slider, maior o IPP base
-        let ipp = parseInt(sliderValue) * 15 + 30; // Base de 30 a 105, limitado a 100
-        if (ipp > 100) ipp = 100;
-
-        // Simula tempo de escuta (opcional, se tiver como rastrear)
-        // Por enquanto, é baseado no check-in e um fator fixo
-        const tempoEscuta = document.getElementById("testimony-audio").currentTime > 0 ? 1 : 0;
-        ipp += tempoEscuta * 20;
+        const sliderValue = parseInt(document.getElementById("presence-slider").value) || 3;
+        // Simula IPP com base no slider e se o usuário "ouviu"
+        const baseIPP = Math.min(100, Math.max(30, sliderValue * 15 + 20));
+        const ipp = baseIPP;
 
         document.getElementById("ipp-score").textContent = ipp;
-        
-        let statusText = "DESATENÇÃO";
-        if (ipp > 80) statusText = "EM FLUXO";
-        else if (ipp > 60) statusText = "PRESENTE";
-        else if (ipp > 40) statusText = "NEUTRO";
 
-        document.getElementById("status").textContent = statusText;
+        let status = "DESATENÇÃO";
+        if (ipp > 80) status = "EM FLUXO";
+        else if (ipp > 60) status = "PRESENTE";
+        else if (ipp > 40) status = "NEUTRO";
 
-        // Cresce a planta do meio
-        document.getElementById("planta-meio").style.height = (ipp * 0.4) + "px";
-        document.getElementById("planta-meio").style.width = (ipp * 0.4) + "px";
+        document.getElementById("status").textContent = status;
+
+        // Cresce a planta do meio proporcionalmente ao IPP
+        const size = (ipp * 0.4);
+        const plantaMeio = document.getElementById("planta-meio");
+        plantaMeio.style.height = size + "px";
+        plantaMeio.style.width = size + "px";
 
         nextSection('slow-listening-section', 'report-section');
     }
