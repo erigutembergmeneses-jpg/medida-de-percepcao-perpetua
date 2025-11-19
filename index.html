@@ -1,4 +1,132 @@
 <!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MPP-Live: Medida de Percepção Perpétua</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: #0a0a0a;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .simulator {
+            max-width: 600px;
+            background-color: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+            text-align: center;
+        }
+
+        h1 {
+            color: #00ffff;
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin: 10px 0;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .active {
+            display: block;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            margin: 15px 0;
+        }
+
+        button {
+            background-color: #004d4d;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+            font-size: 1em;
+        }
+
+        button:hover {
+            background-color: #006b6b;
+        }
+
+        .vaso-container {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+
+        .vaso {
+            width: 80px;
+            height: 100px;
+            border: 1px solid #555;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 5px;
+            background-color: #222;
+        }
+
+        .planta {
+            background-color: #00aa00;
+            border-radius: 50% 50% 0 0;
+            transition: height 1s, width 1s;
+        }
+
+        .vaso-label {
+            font-size: 0.7em;
+            margin-top: 5px;
+        }
+
+        .report #ipp-score {
+            font-weight: bold;
+            color: #00ff00;
+        }
+
+        .report #status {
+            font-weight: bold;
+            color: #ffcc00;
+        }
+    </style>
+</head>
+<body>
+
+<div class="simulator">
+    <h1>MPP-Live</h1>
+    <p>Trabalhe somente neste.</p>
+
+    <!-- Etapa 1: Check-in -->
+    <div id="check-in-section" class="section active">
+        <h2>Check-in de Presença</h2>
+        <p>Você está totalmente aqui agora?</p>
+        <input type="range" min="1" max="5" id="presence-slider" value="3">
+        <button onclick="nextSection('check-in-section', 'slow-listening-section')">Iniciar Escuta</button>
+    </div>
+
+    <!-- Etapa 2: Escuta Desacelerada -->
+    <div id="slow-listening-section" class="section">
+        <h2>Escuta Desacelerada</h2>
+        <p><strong>Instrução:</strong> Ouça sem julgar. Sinta a voz no seu corpo.</p>
+        <!-- Áudio embutido (silêncio com leve tom contínuo, simbolizando escuta) -->
+        <audio id="testimony-audio" controls>
+            <source src="data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAA" type="audio/wav">
+            Seu navegador não suporta o elemento de áudio.
         </audio>
         <p><em>Este áudio simula a escuta desacelerada. Em uma versão real, conteria o depoimento de Dona Cida.</em></p>
         <button onclick="calcularIPP()">Finalizar e Calcular IPP</button>
